@@ -44,13 +44,13 @@ class CharitySpider(Spider):
         rating_financial = rating_list.index(scoring_table.xpath('./table/tr[3]/td[3]/strong/svg/title/text()').extract_first().strip().split(" ")[0]) + 1
         rating_acc_trans = rating_list.index(scoring_table.xpath('./table/tr[4]/td[3]/strong/svg/title/text()').extract_first().strip().split(" ")[0]) + 1
         mission = summary_section.xpath('.//div[@class="summaryBox cn-table"]//p/text()').extract_first().strip()
-        location_line_flag = 1*(re.search(',', response.xpath('//div[@id="leftnavcontent"]/div/p[1]/text()').extract()[1]) is None)
+        location_line_flag = 1*(re.search('\d{5}', response.xpath('//div[@id="leftnavcontent"]/div/p[1]/text()').extract()[1]) is None)
         location = re.split('[\r\n\t\xa0,]+', response.xpath('//div[@id="leftnavcontent"]/div/p[1]/text()').extract()[1+location_line_flag])
         if '' in location:
             location.remove('')
-        location_city = location[0]
-        location_state = location[1]
-        location_zip = location[2]
+        location_city = location[0].strip()
+        location_state = location[1].strip()
+        location_zip = location[2].strip()
         # information provided on form 990 - attribute legend: (binary encoded - each bit corresponds to an attribute)
         # 0x1 - independent voting board members
         # 0x2 - no material diversion of assets
@@ -74,17 +74,19 @@ class CharitySpider(Spider):
         attributes_990 = 0
         attributes_website = 0
         for i in range(12):
-            attributes_990 += 2**i * (re.search('/checked.gif', metrics_table.xpath('./tr[' + str(i+2) + ')]/td[3]/img/@src').extract_first()) is not None)
+            attributes_990 += 2**i * (re.search('/checked.gif', metrics_table.xpath('./tr[' + str(i+2) + ']/td[3]/img/@src').extract_first()) is not None)
         for j in range(5):
-            attributes_website += 2**j * (re.search('/checked.gif', metrics_table.xpath('./tr[' + str(i+15) + ')]/td[3]/img/@src').extract_first()) is not None)
+            attributes_website += 2**j * (re.search('/checked.gif', metrics_table.xpath('./tr[' + str(j+15) + ']/td[3]/img/@src').extract_first()) is not None)
         financial_table_keys = ['', '', 'contributions_gifts_grants', 'contributions_federated_campaigns', 'contributions_membership_dues',
                                  'contributions_fundraising_events', 'contributions_related_organizations', 'contributions_government_grants',
-                                 'contributions_tot', 'revenue_program_service', 'primary_revenue_total', 'revenue_other', 'revenue_total',
-                                 '', '', 'expenses_program', 'expenses_admin', 'expenses_fundraising', 'expenses_total', '', 'affiliate_payments',
+                                 'contributions_tot', 'revenue_program_service', 'primary_revenue_total', 'revenue_other', '',
+                                 '', '', 'expenses_program', 'expenses_admin', 'expenses_fundraising', '', '', 'affiliate_payments',
                                  'excess', '', 'net_assets']
-        financial_table_vals = [0 if income_section.xpath('./div/div/table/tr[' + str(i+1) + ']/td[2]/text()').extract_first() == '\xa0'
+        financial_table_vals = [0 if ((income_section.xpath('./div/div/table/tr[' + str(i+1) + ']/td[2]/text()').extract_first() == '\xa0') or (income_section.xpath('./div/div/table/tr[' + str(i+1) + ']/td[2]/text()').extract_first() is None))
                                 else int(income_section.xpath('./div/div/table/tr[' + str(i+1) + ']/td[2]/text()').extract_first().replace(',', '').replace('$', ''))
                                 for i in range(0, 24)]
+        revenue_total = financial_table_vals[financial_table_keys.index('primary_revenue_total')] + financial_table_vals[financial_table_keys.index('revenue_other')]
+        expenses_total = financial_table_vals[financial_table_keys.index('expenses_program')] + financial_table_vals[financial_table_keys.index('expenses_admin')] + financial_table_vals[financial_table_keys.index('expenses_fundraising')]
 
         # Initialize a new CharityItem instance for each charity.
         item = CharityItem()
@@ -107,4 +109,6 @@ class CharitySpider(Spider):
         for i in range(24):
             if financial_table_keys[i] != '':
                 item[financial_table_keys[i]] = financial_table_vals[i]
+        item['expenses_total'] = expenses_total
+        item['revenue_total'] = revenue_total
         yield item

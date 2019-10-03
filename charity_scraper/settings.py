@@ -14,8 +14,7 @@ BOT_NAME = 'charity_scraper'
 SPIDER_MODULES = ['charity_scraper.spiders']
 NEWSPIDER_MODULE = 'charity_scraper.spiders'
 
-ITEM_PIPELINES = {'charity_scraper.pipelines.ValidateItemPipeline': 100,
-					'charity_scraper.pipelines.WriteItemPipeline': 200}
+ITEM_PIPELINES = {'charity_scraper.pipelines.WriteItemPipeline': 200}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'kobzajj (+http://www.yourdomain.com)'
