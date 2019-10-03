@@ -14,6 +14,9 @@ class CharityItem(scrapy.Item):
     tagline = scrapy.Field()
     category_l1 = scrapy.Field()
     category_l2 = scrapy.Field()
+    location_city = scrapy.Field()
+    location_state = scrapy.Field()
+    location_zip = scrapy.Field()
     # scoring information
     score_overall = scrapy.Field()
     score_financial = scrapy.Field()
