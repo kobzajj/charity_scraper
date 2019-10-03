@@ -6,17 +6,17 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-from scrapy.exceptions import DropItem
+# from scrapy.exceptions import DropItem
 from scrapy.exporters import CsvItemExporter
 
 
-class ValidateItemPipeline(object):
+# class ValidateItemPipeline(object):
 
-    def process_item(self, item, spider):
-        if not all(item.values()):
-            raise DropItem("Missing values!")
-        else:
-            return item
+    # def process_item(self, item, spider):
+    #     if not all(item.values()):
+    #         raise DropItem("Missing values!")
+    #     else:
+    #         return item
 
 
 class WriteItemPipeline(object):

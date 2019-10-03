@@ -44,7 +44,13 @@ class CharitySpider(Spider):
         rating_financial = rating_list.index(scoring_table.xpath('./table/tr[3]/td[3]/strong/svg/title/text()').extract_first().strip().split(" ")[0]) + 1
         rating_acc_trans = rating_list.index(scoring_table.xpath('./table/tr[4]/td[3]/strong/svg/title/text()').extract_first().strip().split(" ")[0]) + 1
         mission = summary_section.xpath('.//div[@class="summaryBox cn-table"]//p/text()').extract_first().strip()
-        [location_city, location_state, location_zip] = re.split('[\r\n\t\xa0]+', response.xpath('//div[@id="leftnavcontent"]/div/p[1]/text()').extract()[1])
+        location_line_flag = 1*(re.search(',', response.xpath('//div[@id="leftnavcontent"]/div/p[1]/text()').extract()[1]) is None)
+        location = re.split('[\r\n\t\xa0,]+', response.xpath('//div[@id="leftnavcontent"]/div/p[1]/text()').extract()[1+location_line_flag])
+        if '' in location:
+            location.remove('')
+        location_city = location[0]
+        location_state = location[1]
+        location_zip = location[2]
         # information provided on form 990 - attribute legend: (binary encoded - each bit corresponds to an attribute)
         # 0x1 - independent voting board members
         # 0x2 - no material diversion of assets
