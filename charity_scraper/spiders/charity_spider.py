@@ -17,7 +17,7 @@ class CharitySpider(Spider):
 
     def parse_directory_page(self, response):
         # Find all the urls for the charity pages within the directory page
-        charity_urls = response.xpath('//div[@class="mobile-padding charities"]/a/href').extract()
+        charity_urls = response.xpath('//div[@class="mobile-padding charities"]/a/@href').extract()
         for url in charity_urls:
             yield Request(url=url, callback=self.parse_charity_page)
 
