@@ -4,7 +4,6 @@
     <list default="true" id="77b2fcd4-696c-47c1-a881-7ea320961c24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/charities.csv" beforeDir="false" afterPath="$PROJECT_DIR$/charities.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/charity_scraper/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_scraper/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/charity_scraper/spiders/charity_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_scraper/spiders/charity_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,6 +27,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Python/Scrapy/Scrapy_Lab/Scrapy_Lab/Solution" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -64,7 +64,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
