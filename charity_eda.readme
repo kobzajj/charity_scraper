@@ -1,0 +1,24 @@
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+from collections import Counter
+
+
+# file for doing exploratory data analysis on the scraped charity data
+
+
+# word cloud to show the words used in the missions for the charities
+# also a comparison cloud between categories for the words in missions for each category
+# subjectivity and polarity of the mission against rating (sentiment analysis)
+
+
+# plots showing the data on the charities in the data set:
+#     distribution of charities by location (maybe show a map visual)
+#     distribution by location by category (
+#     average rating by location
+#     distribution by rating and category
+#     distribution of revenue, cost, net assets, etc.
+#     relationship between rating and revenue, cost, net assets, etc.
+#     relationship between compensation of executives and overall financial standing
+#     typical distribution of the expenses and revenue into categories
+#     statistical significance of different states or categories that have higher average ratings
