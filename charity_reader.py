@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
+import charity_nlp as cnlp
 
 file_name = 'charities.csv'
 
@@ -46,11 +47,11 @@ def unpack_attributes(df):
 
     atts_990_mask = df['attributes_990']
     for att_ in atts_990:
-        df[att_] = df[atts_990_mask] % 2 == 1
+        df[att_] = atts_990_mask % 2 == 1
         atts_990_mask //= 2
     atts_website_mask = df['attributes_website']
     for att_ in atts_website:
-        df[att_] = df[atts_website_mask] % 2 == 1
+        df[att_] = atts_website_mask % 2 == 1
         atts_website_mask //= 2
     return df
 
@@ -70,3 +71,7 @@ charity_df = read_csv(file_name)
 charity_df = process_missingvals(charity_df)
 charity_df = unpack_attributes(charity_df)
 charity_df = calculate_ratios(charity_df)
+charity_df = cnlp.preprocess_text(charity_df, 'mission')
+cnlp.create_wordcloud(charity_df, 'mission_nlp', 'All')
+cnlp.compare_wordclouds(charity_df)
+cnlp.sentiment_analysis(charity_df, 'score_overall')

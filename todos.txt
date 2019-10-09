@@ -1,0 +1,5 @@
+Things to go back and do in areas already completed:
+Add axis labels and titles to missing value graphs
+Add more words to custom stemming if needed
+Incorporate custom shapes into wordcloud comparison by category
+Make the dots smaller on the polarity scatterplot
