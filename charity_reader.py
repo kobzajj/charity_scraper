@@ -3,6 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
 import charity_nlp as cnlp
+import charity_charts as cc
 
 file_name = 'charities.csv'
 
@@ -33,7 +34,7 @@ def process_missingvals(df):
     category_missing_dist = df['category_l1'].groupby(df['missing']).value_counts(normalize=True).rename('percentage').reset_index()
     category_grid = sns.FacetGrid(category_missing_dist, col='missing', hue='missing', palette='Set1', height=6)
     category_grid.map(sns.barplot, "category_l1", "percentage")
-    plt.show()
+    # plt.show()
 
     return df
 
@@ -75,3 +76,17 @@ charity_df = cnlp.preprocess_text(charity_df, 'mission')
 cnlp.create_wordcloud(charity_df, 'mission_nlp', 'All')
 cnlp.compare_wordclouds(charity_df)
 cnlp.sentiment_analysis(charity_df, 'score_overall')
+cc.create_state_map(charity_df, 'name', 'count', 'viridis')
+cc.create_state_map(charity_df, 'score_overall', 'mean', 'viridis')
+cc.plot_distribution(charity_df, 'category_l1', 'rating_overall')
+cc.plot_distribution(charity_df, 'score_overall')
+cc.plot_distribution(charity_df, 'revenue_total')
+cc.plot_distribution(charity_df, 'expenses_total')
+cc.plot_distribution(charity_df, 'excess')
+cc.plot_distribution(charity_df, 'net_assets')
+cc.plot_relationship(charity_df, 'net_assets', 'score_overall')
+cc.plot_relationship(charity_df, 'excess', 'score_overall')
+cc.plot_relationship(charity_df, 'revenue', 'score_overall')
+cc.plot_relationship(charity_df, 'prog_expense_ratio', 'score_overall')
+cc.plot_relationship(charity_df, 'fund_efficiency', 'score_overall')
+cc.plot_relationship(charity_df, 'working_capital_ratio', 'score_overall')

@@ -58,7 +58,7 @@ def create_wordcloud(df, field_name, data_subset):
             'size': 16,
             }
     plt.title('Mission Text Wordcloud for ' + data_subset + ' Charities', fontdict=font)
-    plt.show()
+    # plt.show()
 
 def compare_wordclouds(df):
     # generate multiple word clouds to compare the language used by different categories of charities
@@ -74,5 +74,6 @@ def sentiment_analysis(df, field_name):
     sa_df = df[df[field_name].isnull() == False]
     sa_df = sa_df.apply(sentiment_func, axis=1)
     sa_df.plot.scatter('polarity', field_name)
-    plt.show()
+    # plt.show()
     sa_df.plot.scatter('subjectivity', field_name)
+    # plt.show()
