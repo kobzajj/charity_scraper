@@ -87,10 +87,20 @@ charity_df = calculate_ratios(charity_df)
 # cnlp.create_wordcloud(charity_df, 'mission_nlp', 'All')
 # cnlp.compare_wordclouds(charity_df)
 # cnlp.sentiment_analysis(charity_df, 'score_overall')
+
+print('Number of Charities: %d' %(charity_df['name'].count()))
 print('Mean of overall score: %.2f' %(charity_df['score_overall'].mean()))
 print('Standard Deviation of overall score: %.2f' %(charity_df['score_overall'].std()))
+print('Total Revenue of Scraped Charitable Organizations: %.2f' %(charity_df['revenue_total'].sum()))
+print('Total Expenses of Scraped Charitable Organizations: %.2f' %(charity_df['expenses_total'].sum()))
+
+# map of charity counts by state
 cc.create_state_map(charity_df, 'name', 'Number of Charities', 'count', 'magma')
+
+# map of average overall score by state
 cc.create_state_map(charity_df, 'score_overall', 'Average Score', 'mean', 'magma')
+
+# 
 cc.plot_distribution(charity_df, 'category_l1', 'Charity Category', stack_field='rating_overall', stack_title='Overall Rating')
 cc.plot_distribution(charity_df, 'score_overall', 'Overall Score')
 cc.plot_distribution(charity_df, 'revenue_total', 'Total Revenue', log_x=True)

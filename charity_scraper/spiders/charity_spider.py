@@ -120,7 +120,7 @@ class CharitySpider(Spider):
             revenue_total = financial_table_vals[financial_table_keys.index('primary_revenue_total')] + financial_table_vals[financial_table_keys.index('revenue_other')]
             expenses_total = financial_table_vals[financial_table_keys.index('expenses_program')] + financial_table_vals[financial_table_keys.index('expenses_admin')] + financial_table_vals[financial_table_keys.index('expenses_fundraising')]
 
-            leader_comp = container.xpath('.//div[@class="summaryBox cn-accordion-rating"][2]/div/table/tbody/tr[2]/td[1]/span/text()').extract_first().replace(',', '').replace('$', '')
+            leader_comp = container.xpath('.//div[@class="summaryBox cn-accordion-rating"][2]/div/table/tr[2]/td[1]/span/text()').extract_first().strip().replace(',', '').replace('$', '')
 
             item['score_overall'] = score_overall
             item['score_financial'] = score_financial
