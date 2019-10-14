@@ -53,7 +53,6 @@ class CharitySpider(Spider):
             # split the page into three sections that have the items we are looking to scrape
             summary_section = container.xpath('.//div[@class="summaryBox"]')
             income_section = container.xpath('.//div[@class="summaryBox income-table"]')
-            comp_section = container.xpath('.//div[@class="summaryBox cn-accordion-rating"]')
 
             # get all the information from each section
             # general information outside the container
@@ -121,6 +120,7 @@ class CharitySpider(Spider):
             revenue_total = financial_table_vals[financial_table_keys.index('primary_revenue_total')] + financial_table_vals[financial_table_keys.index('revenue_other')]
             expenses_total = financial_table_vals[financial_table_keys.index('expenses_program')] + financial_table_vals[financial_table_keys.index('expenses_admin')] + financial_table_vals[financial_table_keys.index('expenses_fundraising')]
 
+            leader_comp = container.xpath('.//div[@class="summaryBox cn-accordion-rating"][2]/div/table/tbody/tr[2]/td[1]/span/text()').extract_first().replace(',', '').replace('$', '')
 
             item['score_overall'] = score_overall
             item['score_financial'] = score_financial
@@ -136,4 +136,5 @@ class CharitySpider(Spider):
                     item[financial_table_keys[i]] = financial_table_vals[i]
             item['expenses_total'] = expenses_total
             item['revenue_total'] = revenue_total
+            item['leader_comp'] = leader_comp
         yield item

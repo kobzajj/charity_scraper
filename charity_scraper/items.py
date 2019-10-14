@@ -51,3 +51,4 @@ class CharityItem(scrapy.Item):
     attributes_990 = scrapy.Field()
     # attributes - website
     attributes_website = scrapy.Field()
+    leader_comp = scrapy.Field()

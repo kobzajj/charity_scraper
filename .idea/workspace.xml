@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="77b2fcd4-696c-47c1-a881-7ea320961c24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/charities.csv" beforeDir="false" afterPath="$PROJECT_DIR$/charities.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/charity_charts.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_charts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/charity_nlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_nlp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/charity_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/charity_scraper/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_scraper/items.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/charity_scraper/spiders/charity_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/charity_scraper/spiders/charity_spider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp-plot.html" beforeDir="false" afterPath="$PROJECT_DIR$/temp-plot.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todos.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

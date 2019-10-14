@@ -1,12 +1,12 @@
 Things to go back and do in areas already completed:
-Add axis labels and titles to missing value graphs
 Add more words to custom stemming if needed
-Incorporate custom shapes into wordcloud comparison by category
-Make the dots smaller on the polarity scatterplot
-Update the color schemes of the map charts
-Add the ability to do by county instead of by state
 Switch all the plotly plots to online and give them all names
 In the stacked histograms, sort the colors from high to low instead of low to high
 Update the scroll over wording in the plotly charts to include percentages
-Show line on the histograms for where the median occurs
-Add a max value to the histograms for the financial ones, or the option to take out anything outside x number of standard deviations
+Show line on the histograms for where the mean and median occurs
+Revenue, expenses, excess, net assets histograms: need to remove outliers or just log it (logging didn't work)
+Working capital: need to take out outliers it is very clustered in the top left
+Logarithm scale doesn't work for histograms - need to adjust
+Worth looking at still: compensation, and relationship between funding efficiency and net assets / excess
+
+NEED TO RESCRAPE FOR COMPENSATION
