@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import charity_nlp as cnlp
 import charity_charts as cc
+import locale
 
 file_name = 'charities.csv'
 
@@ -24,6 +25,9 @@ def process_missingvals(df):
     df['missing'] = df.isnull().any(axis=1)
     df_missing = df[df['missing'] == True]
     print('Rows with missing values: ' + str(df_missing.missing.count()) + " / " + str(df.shape[0]) + " total charities (" + str(round(df_missing.missing.count()/df.shape[0], 2)*100) + "%)")
+
+    df['leader_comp'] = df['leader_comp'].replace('Not compensated', 0)
+    df['leader_comp'] = df['leader_comp'].replace('None reported', np.nan)
 
     sns.set(font_scale=0.6)
 
@@ -78,6 +82,7 @@ def calculate_ratios(df):
     df['working_capital_ratio'] = df['net_assets'] / df['expenses_total']
     return df
 
+locale.setlocale(locale.LC_ALL, '')
 
 charity_df = read_csv(file_name)
 charity_df = process_missingvals(charity_df)
@@ -91,27 +96,85 @@ charity_df = calculate_ratios(charity_df)
 print('Number of Charities: %d' %(charity_df['name'].count()))
 print('Mean of overall score: %.2f' %(charity_df['score_overall'].mean()))
 print('Standard Deviation of overall score: %.2f' %(charity_df['score_overall'].std()))
-print('Total Revenue of Scraped Charitable Organizations: %.2f' %(charity_df['revenue_total'].sum()))
-print('Total Expenses of Scraped Charitable Organizations: %.2f' %(charity_df['expenses_total'].sum()))
+print('Total Revenue of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['revenue_total'].sum(), grouping=True)))
+print('Total Contributions of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['contributions_tot'].sum(), grouping=True)))
+print('Total Expenses of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['expenses_total'].sum(), grouping=True)))
 
-# map of charity counts by state
-cc.create_state_map(charity_df, 'name', 'Number of Charities', 'count', 'magma')
+print('Average Revenue of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['revenue_total'].mean(), grouping=True)))
+print('Average Contributions of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['contributions_tot'].mean(), grouping=True)))
+print('Average Expenses of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['expenses_total'].mean(), grouping=True)))
+print('Average Excess of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['excess'].mean(), grouping=True)))
+print('Maximum Excess of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['excess'].max(), grouping=True)))
+print('Minmum Excess of Scraped Charitable Organizations: %s' %(locale.currency(charity_df['excess'].min(), grouping=True)))
 
-# map of average overall score by state
-cc.create_state_map(charity_df, 'score_overall', 'Average Score', 'mean', 'magma')
+print('Maximum Contributions of Scraped Charitable Organizations: %s - %s' %(charity_df.loc[charity_df['contributions_tot'] == charity_df['contributions_tot'].max()]['name'], locale.currency(charity_df['contributions_tot'].max(), grouping=True)))
+print('Minmum Contributions of Scraped Charitable Organizations: %s - %s' %(charity_df.loc[charity_df['contributions_tot'] == charity_df['contributions_tot'].min()]['name'], locale.currency(charity_df['contributions_tot'].min(), grouping=True)))
 
-# 
-cc.plot_distribution(charity_df, 'category_l1', 'Charity Category', stack_field='rating_overall', stack_title='Overall Rating')
-cc.plot_distribution(charity_df, 'score_overall', 'Overall Score')
-cc.plot_distribution(charity_df, 'revenue_total', 'Total Revenue', log_x=True)
-cc.plot_distribution(charity_df, 'expenses_total', 'Total Expenses', log_x=True)
-cc.plot_distribution(charity_df, 'excess', '2018 Excess (Revenue-Cost)', log_x=True)
-cc.plot_distribution(charity_df, 'net_assets', 'Net Assets', log_x=True)
-cc.plot_relationship(charity_df, 'net_assets', 'score_overall', 'Net Assets', 'Overall Score', log_x=True)
-cc.plot_relationship(charity_df, 'excess', 'score_overall', 'Excess (Revenue-Cost)', 'Overall Score', log_x=True)
-cc.plot_relationship(charity_df, 'revenue_total', 'score_overall', 'Total Revenue', 'Overall Score', log_x=True)
-cc.plot_relationship(charity_df, 'prog_expense_ratio', 'score_overall', 'Program Expense Ratio', 'Overall Score')
-cc.plot_relationship(charity_df, 'fund_efficiency', 'score_overall', 'Funding Efficiency', 'Overall Score')
-cc.plot_relationship(charity_df, 'working_capital_ratio', 'score_overall', 'Working Capital Ratio', 'Overall Score')
-cc.plot_relationship(charity_df, 'num_990_attributes', 'score_overall', 'Number of 990 Attributes', 'Overall Score')
-cc.plot_relationship(charity_df, 'num_website_attributes', 'score_overall', 'Number of Website Attributes', 'Overall Score')
+print(charity_df['rating_overall'].mean())
+print('4 Stars: %d (%.0f%%)' %(charity_df[charity_df['rating_overall']==4]['name'].count(), charity_df[charity_df['rating_overall']==4]['name'].count() / charity_df.shape[0] * 100))
+print('3 Stars: %d (%.0f%%)' %(charity_df[charity_df['rating_overall']==3]['name'].count(), charity_df[charity_df['rating_overall']==3]['name'].count() / charity_df.shape[0] * 100))
+print('2 Stars: %d (%.0f%%)' %(charity_df[charity_df['rating_overall']==2]['name'].count(), charity_df[charity_df['rating_overall']==2]['name'].count() / charity_df.shape[0] * 100))
+print('1 Stars: %d (%.0f%%)' %(charity_df[charity_df['rating_overall']==1]['name'].count(), charity_df[charity_df['rating_overall']==1]['name'].count() / charity_df.shape[0] * 100))
+print('0 Stars: %d (%.0f%%)' %(charity_df[charity_df['rating_overall']==0]['name'].count(), charity_df[charity_df['rating_overall']==0]['name'].count() / charity_df.shape[0] * 100))
+print('Missing: %d (%.0f%%)' %(charity_df[charity_df['rating_overall'].isnull()]['name'].count(), charity_df[charity_df['rating_overall'].isnull()]['name'].count() / charity_df.shape[0] * 100))
+
+# # map of charity counts by state
+# cc.create_state_map(charity_df, 'name', 'Number of Charities', 'count', 'magma')
+#
+# # map of average overall score by state
+# cc.create_state_map(charity_df, 'score_overall', 'Average Score', 'mean', 'magma')
+
+# # distribution of charities by category, with breakdown by rating (4 to 1) layered on top
+# cc.plot_distribution(charity_df.sort_values(by=['rating_overall', 'category_l1']), 'category_l1', 'Charity Category', stack_field='rating_overall', stack_title='Overall Rating')
+
+cc.plot_bar(charity_df.sort_values(by=['category_l1']), 'category_l1', 'contributions_tot', 'Category', 'Total Contributions')
+
+# # distribution of overall score across all charities
+# cc.plot_distribution(charity_df.sort_values(by=['rating_overall']), 'score_overall', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating', nbins=80)
+
+charity_df['log_revenue'] = np.log10(charity_df['revenue_total'])
+
+# # distribution of revenue across all charities
+# cc.plot_distribution(charity_df.sort_values(by=['rating_overall']), 'log_revenue', 'Log Base 10 of Total Revenue', stack_field='rating_overall', stack_title='Overall Rating', nbins=80)
+#
+# # distribution of expenses across all charities
+# cc.plot_distribution(charity_df, 'expenses_total', 'Total Expenses')
+#
+# # distribution of excess (revenue minus cost) across all charities
+# cc.plot_distribution(charity_df, 'excess', '2018 Excess (Revenue-Cost)')
+#
+# # distribution of net assets across all charities
+# cc.plot_distribution(charity_df, 'net_assets', 'Net Assets')
+#
+# # relationship between net assets and overall score
+# cc.plot_relationship(charity_df, 'net_assets', 'score_overall', 'Net Assets', 'Overall Score', log_x=True)
+#
+# # relationship between excess (revenue minus cost) and overall score
+# cc.plot_relationship(charity_df, 'excess', 'score_overall', 'Excess (Revenue-Cost)', 'Overall Score', log_x=True)
+#
+# # relationship between total revenue and overall score
+# cc.plot_relationship(charity_df, 'revenue_total', 'score_overall', 'Total Revenue', 'Overall Score', log_x=True)
+#
+# # relationship between program / expense ratio and overall score
+# cc.plot_distribution(charity_df.sort_values(by=['rating_overall']), 'prog_expense_ratio', 'Program Expense Ratio', nbins=40, stack_field='rating_overall', stack_title='Overall Rating')
+# cc.plot_relationship(charity_df, 'prog_expense_ratio', 'score_overall', 'Program Expense Ratio', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
+
+# # relationship between funding efficiency and overall score
+# cc.plot_relationship(charity_df, 'fund_efficiency', 'score_overall', 'Funding Efficiency', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
+
+charity_df_no_wc_outliers = charity_df[['working_capital_ratio', 'score_overall']]
+charity_df_no_wc_outliers = charity_df_no_wc_outliers.loc[charity_df_no_wc_outliers['working_capital_ratio'].apply(lambda x: np.abs(x - charity_df_no_wc_outliers['working_capital_ratio'].mean()) / charity_df_no_wc_outliers['working_capital_ratio'].std() < 3)]
+
+# relationship between working capital ratio and overall score
+# cc.plot_relationship(charity_df, 'working_capital_ratio', 'score_overall', 'Working Capital Ratio', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
+# cc.plot_relationship(charity_df_no_wc_outliers, 'working_capital_ratio', 'score_overall', 'Working Capital Ratio', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
+
+charity_df.dropna(axis=0, subset=['leader_comp'])
+
+# # analysis of leader compensation
+# cc.plot_distribution(charity_df, 'leader_comp', 'Leader Compensation', nbins=50)
+#
+# cc.plot_relationship(charity_df, 'leader_comp', 'excess', 'Leader Compensation', 'Excess (Revenue-Cost)', stack_field='rating_overall', stack_title='Overall Rating')
+
+# cc.plot_relationship(charity_df, 'num_990_attributes', 'score_overall', 'Number of 990 Attributes', 'Overall Score')
+# cc.plot_relationship(charity_df, 'num_website_attributes', 'score_overall', 'Number of Website Attributes', 'Overall Score')
