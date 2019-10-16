@@ -120,14 +120,17 @@ print('Missing: %d (%.0f%%)' %(charity_df[charity_df['rating_overall'].isnull()]
 
 # # map of charity counts by state
 # cc.create_state_map(charity_df, 'name', 'Number of Charities', 'count', 'magma')
-#
+
+# # map of charity counts per million people by state
+# cc.create_state_map(charity_df, 'name', 'Number of Charities', 'count', 'magma', by_pop=True)
+
 # # map of average overall score by state
 # cc.create_state_map(charity_df, 'score_overall', 'Average Score', 'mean', 'magma')
 
 # # distribution of charities by category, with breakdown by rating (4 to 1) layered on top
-# cc.plot_distribution(charity_df.sort_values(by=['rating_overall', 'category_l1']), 'category_l1', 'Charity Category', stack_field='rating_overall', stack_title='Overall Rating')
+cc.plot_distribution(charity_df.sort_values(by=['category_l1', 'rating_overall']), 'category_l1', 'Charity Category', stack_field='rating_overall', stack_title='Overall Rating')
 
-cc.plot_bar(charity_df.sort_values(by=['category_l1']), 'category_l1', 'contributions_tot', 'Category', 'Total Contributions')
+# cc.plot_bar(charity_df.sort_values(by=['category_l1']), 'category_l1', 'contributions_tot', 'Category', 'Total Contributions')
 
 # # distribution of overall score across all charities
 # cc.plot_distribution(charity_df.sort_values(by=['rating_overall']), 'score_overall', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating', nbins=80)
@@ -159,11 +162,13 @@ charity_df['log_revenue'] = np.log10(charity_df['revenue_total'])
 # cc.plot_distribution(charity_df.sort_values(by=['rating_overall']), 'prog_expense_ratio', 'Program Expense Ratio', nbins=40, stack_field='rating_overall', stack_title='Overall Rating')
 # cc.plot_relationship(charity_df, 'prog_expense_ratio', 'score_overall', 'Program Expense Ratio', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
 
+# cc.plot_relationship_with_fit(charity_df, 'prog_expense_ratio', 'score_overall', 'Program Expense Ratio', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
+
 # # relationship between funding efficiency and overall score
 # cc.plot_relationship(charity_df, 'fund_efficiency', 'score_overall', 'Funding Efficiency', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
 
-charity_df_no_wc_outliers = charity_df[['working_capital_ratio', 'score_overall']]
-charity_df_no_wc_outliers = charity_df_no_wc_outliers.loc[charity_df_no_wc_outliers['working_capital_ratio'].apply(lambda x: np.abs(x - charity_df_no_wc_outliers['working_capital_ratio'].mean()) / charity_df_no_wc_outliers['working_capital_ratio'].std() < 3)]
+# charity_df_no_wc_outliers = charity_df[['working_capital_ratio', 'score_overall']]
+# charity_df_no_wc_outliers = charity_df_no_wc_outliers.loc[charity_df_no_wc_outliers['working_capital_ratio'].apply(lambda x: np.abs(x - charity_df_no_wc_outliers['working_capital_ratio'].mean()) / charity_df_no_wc_outliers['working_capital_ratio'].std() < 3)]
 
 # relationship between working capital ratio and overall score
 # cc.plot_relationship(charity_df, 'working_capital_ratio', 'score_overall', 'Working Capital Ratio', 'Overall Score', stack_field='rating_overall', stack_title='Overall Rating')
